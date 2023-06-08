@@ -1,5 +1,5 @@
 # Define a imagem base
-FROM khipu/openjdk17-alpine
+FROM adoptopenjdk/openjdk11:jre-11.0.6_10-alpine
 
 # Define o diretório de trabalho dentro do container
 WORKDIR /app
