@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://ep-hidden-cell-103206.us-east-2.aws.neon.tech/neondb
+    username: ErickBarbosa88
+    password: rUVk8pltcM4E
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
