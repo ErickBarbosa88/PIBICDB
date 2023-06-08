@@ -17,7 +17,7 @@ public class AlunosController {
 
    @Autowired
     AlunoRepository alunoRepository;
-   
+
     @GetMapping("/")
     public List<Alunos> listar(){
 
