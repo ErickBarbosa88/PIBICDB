@@ -1,5 +1,5 @@
 # Define a imagem base
-FROM openjdk:11
+FROM openjdk:17
 
 # Define o diretório de trabalho dentro do container
 WORKDIR /app
