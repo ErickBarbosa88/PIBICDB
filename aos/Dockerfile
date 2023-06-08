@@ -1,5 +1,5 @@
 # Define a imagem base
-FROM adoptopenjdk/openjdk11:ubi
+FROM openjdk:11
 
 # Define o diretório de trabalho dentro do container
 WORKDIR /app
@@ -11,5 +11,5 @@ COPY /aos/target/aos-0.0.1-SNAPSHOT.jar /app/aos.jar
 EXPOSE 8080
 
 # Define o comando para executar o aplicativo quando o container for iniciado
-CMD ["java", "-jar", "aos.jar"]
+CMD ["java", "-jar", "/app/aos.jar"]
 
