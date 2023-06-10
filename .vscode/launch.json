@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-AosApplication<aos>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.aos.aplicacaospring.aos.AosApplication",
+            "projectName": "aos",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

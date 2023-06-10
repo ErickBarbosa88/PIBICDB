@@ -1,6 +1,7 @@
 package com.aos.aplicacaospring.aos.controller;
 
 import com.aos.aplicacaospring.aos.Repository.ProfessorRepository;
+import com.aos.aplicacaospring.aos.model.Alunos;
 import com.aos.aplicacaospring.aos.model.Professor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,8 @@ public class ProfessorController {
     }
     @PostMapping("/create")
     public Professor criar (@RequestBody Professor professor){
-        return ProfessorRepository.save(professor);
+        return professorRepository.save(professor);
+
     }
 
 
