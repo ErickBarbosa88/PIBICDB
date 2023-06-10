@@ -1,4 +1,7 @@
 com\aos\aplicacaospring\aos\Repository\AlunoRepository.class
-com\aos\aplicacaospring\aos\AosApplication.class
+com\aos\aplicacaospring\aos\model\Professor.class
 com\aos\aplicacaospring\aos\controller\AlunosController.class
+com\aos\aplicacaospring\aos\controller\ProfessorController.class
+com\aos\aplicacaospring\aos\Repository\ProfessorRepository.class
 com\aos\aplicacaospring\aos\model\Alunos.class
+com\aos\aplicacaospring\aos\AosApplication.class
