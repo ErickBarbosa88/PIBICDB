@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Table(name = "Professor")
 @Getter
 @Setter
@@ -58,4 +60,7 @@ public class Professor {
     @Column(name = "nomeDoGrupoDePesquisa",length = 200)
     @NotNull
     private String nomeDoGrupoDePesquisa;
+
+    @OneToMany(mappedBy = "professor", cascade = CascadeType.ALL)
+    private List<Projeto> projetos;
 }
