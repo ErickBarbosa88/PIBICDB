@@ -8,7 +8,7 @@ WORKDIR /app
 COPY /aos/target/aos-0.0.1-SNAPSHOT.jar /app/aos.jar
 
 # Expõe a porta do aplicativo
-EXPOSE 8000
+EXPOSE 8080
 
 # Define o comando para executar o aplicativo quando o container for iniciado
 CMD ["java", "-jar", "/app/aos.jar"]
