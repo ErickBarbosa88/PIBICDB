@@ -3,5 +3,8 @@ com\aos\aplicacaospring\aos\model\Professor.class
 com\aos\aplicacaospring\aos\controller\AlunosController.class
 com\aos\aplicacaospring\aos\controller\ProfessorController.class
 com\aos\aplicacaospring\aos\Repository\ProfessorRepository.class
+com\aos\aplicacaospring\aos\Repository\ProjetoRepository.class
 com\aos\aplicacaospring\aos\model\Alunos.class
 com\aos\aplicacaospring\aos\AosApplication.class
+com\aos\aplicacaospring\aos\controller\ProjetoController.class
+com\aos\aplicacaospring\aos\model\Projeto.class
