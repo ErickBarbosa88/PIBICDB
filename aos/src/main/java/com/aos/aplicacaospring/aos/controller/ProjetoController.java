@@ -16,40 +16,55 @@ public class ProjetoController {
     @Autowired
     ProjetoRepository projetoRepository;
 
-    @GetMapping("/")
-    public List<Projeto> listar(){
-
-        return projetoRepository.findAll();
+    @GetMapping
+    public ResponseEntity<List<Projeto>> getAllProjects(){
+        List<Projeto> projetos = projetoRepository.findAll();
+        if(!projetos.isEmpty()){
+            return ResponseEntity.ok(projetos);
+        }
+            return ResponseEntity.noContent().build();
     }
-    @PostMapping("/create")
-    public Projeto criar (@RequestBody Projeto projeto){
-        return projetoRepository.save(projeto);
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Projeto> getProjectById(@PathVariable Long id){
+        Optional<Projeto> projeto = projetoRepository.findById(id);
+        if(projeto.isPresent()){
+            return ResponseEntity.ok(projeto.get());
+        }
+        return ResponseEntity.notFound().build();
+    }
+    @PostMapping
+    public ResponseEntity<Projeto> createProject (@RequestBody Projeto projeto){
+        Projeto newProject = projetoRepository.save(projeto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newProject);
     }
 
 
-    @PutMapping("/editar/{id}")
-    public ResponseEntity<String> editar(@PathVariable Long id, @RequestBody Projeto projetoAtualizado) {
-        Optional<Projeto> projetoExistente = projetoRepository.findById(id);
+    @PutMapping("/{id}")
+    public ResponseEntity<Projeto> updateProject(@PathVariable Long id, @RequestBody Projeto projeto) {
+        Optional<Projeto> existingProject = projetoRepository.findById(id);
 
-        if (projetoExistente.isPresent()) {
-            Projeto projeto = projetoExistente.get();
-            projeto.setNome(projetoAtualizado.getNome());
-            projeto.setDescricao(projetoAtualizado.getDescricao());
-            projeto.setProfessor(projetoAtualizado.getProfessor());
+        if (existingProject.isPresent()) {
+            Projeto updatedProject = existingProject.get();
+            updatedProject.setNome(projeto.getNome());
+            updatedProject.setDescricao(projeto.getDescricao());
+            updatedProject.setProfessor(projeto.getProfessor());
 
-            projetoRepository.save(projeto);
-
-            return new ResponseEntity<>("Projeto foi atualizado com sucesso", HttpStatus.OK);
+            Projeto savedProject = projetoRepository.save(updatedProject);
+            return ResponseEntity.ok(savedProject);
         } else {
-            return new ResponseEntity<>("Projeto não foi encontrado", HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 
-    @DeleteMapping("/delete")
-    @ResponseBody
-    public ResponseEntity<String> delete (@RequestParam Long id) {
-        projetoRepository.deleteById(id);
-        return new ResponseEntity<String>("Projeto deletado com sucesso", HttpStatus.OK);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProject (@PathVariable Long id) {
+        Optional<Projeto> existingProject = projetoRepository.findById(id);
+        if(existingProject.isPresent()){
+            projetoRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }
+            return ResponseEntity.notFound().build();
     }
 
 }
