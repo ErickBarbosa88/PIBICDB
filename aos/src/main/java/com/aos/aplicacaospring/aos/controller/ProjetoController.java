@@ -17,33 +17,33 @@ public class ProjetoController {
     ProjetoRepository projetoRepository;
 
     @GetMapping
-    public ResponseEntity<List<Projeto>> getAllProjects(){
+    public ResponseEntity<List<Projeto>> getAllProjects() {
         List<Projeto> projetos = projetoRepository.findAll();
-        if(!projetos.isEmpty()){
+        if (!projetos.isEmpty()) {
             return ResponseEntity.ok(projetos);
         }
-            return ResponseEntity.noContent().build();
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Projeto> getProjectById(@PathVariable Long id){
-        Optional<Projeto> projeto = projetoRepository.findById(id);
-        if(projeto.isPresent()){
-            return ResponseEntity.ok(projeto.get());
+    public ResponseEntity<Projeto> getProjectById(@PathVariable Long id) {
+        Optional<Projeto> projetoOptional = projetoRepository.findById(id);
+        if (projetoOptional.isPresent()) {
+            Projeto projeto = projetoOptional.get();
+            return ResponseEntity.ok(projeto);
         }
         return ResponseEntity.notFound().build();
     }
+
     @PostMapping
-    public ResponseEntity<Projeto> createProject (@RequestBody Projeto projeto){
+    public ResponseEntity<Projeto> createProject(@RequestBody Projeto projeto) {
         Projeto newProject = projetoRepository.save(projeto);
         return ResponseEntity.status(HttpStatus.CREATED).body(newProject);
     }
 
-
     @PutMapping("/{id}")
     public ResponseEntity<Projeto> updateProject(@PathVariable Long id, @RequestBody Projeto projeto) {
         Optional<Projeto> existingProject = projetoRepository.findById(id);
-
         if (existingProject.isPresent()) {
             Projeto updatedProject = existingProject.get();
             updatedProject.setNome(projeto.getNome());
@@ -58,13 +58,12 @@ public class ProjetoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProject (@PathVariable Long id) {
+    public ResponseEntity<Void> deleteProject(@PathVariable Long id) {
         Optional<Projeto> existingProject = projetoRepository.findById(id);
-        if(existingProject.isPresent()){
+        if (existingProject.isPresent()) {
             projetoRepository.deleteById(id);
             return ResponseEntity.noContent().build();
         }
-            return ResponseEntity.notFound().build();
+        return ResponseEntity.notFound().build();
     }
-
 }

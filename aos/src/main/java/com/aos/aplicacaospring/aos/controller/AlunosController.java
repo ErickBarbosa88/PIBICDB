@@ -15,42 +15,58 @@ import java.util.Optional;
 @RequestMapping("/alunos")
 public class AlunosController {
 
-   @Autowired
+    @Autowired
     AlunoRepository alunoRepository;
 
-    @GetMapping("/")
-    public List<Alunos> listar(){
-
+    @GetMapping()
+    public List<Alunos> listar() {
         return alunoRepository.findAll();
     }
-    @PostMapping("/create")
-    public Alunos criar (@RequestBody Alunos alunos){
-        return alunoRepository.save(alunos);
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Alunos> getAlunoById(@PathVariable Long id) {
+        Optional<Alunos> alunos = alunoRepository.findById(id);
+        return alunos.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    public ResponseEntity<Alunos> createAluno(@RequestBody Alunos alunos) {
+        Alunos newAluno = alunoRepository.save(alunos);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newAluno);
     }
 
 
-    @PutMapping("/editar/{id}")
-    public ResponseEntity<String> editar(@PathVariable Long id, @RequestBody Alunos alunoAtualizado) {
-        Optional<Alunos> alunoExistente = alunoRepository.findById(id);
+    @PutMapping("/{id}")
+    public ResponseEntity<Alunos> updateAluno(@PathVariable Long id, @RequestBody Alunos aluno) {
+        Optional<Alunos> existingAluno = alunoRepository.findById(id);
 
-        if (alunoExistente.isPresent()) {
-            Alunos aluno = alunoExistente.get();
-            aluno.setNome(alunoAtualizado.getNome());
-            aluno.setNome(alunoAtualizado.getEmail());
+        if (existingAluno.isPresent()) {
+           Alunos updateAluno = existingAluno.get();
 
-            alunoRepository.save(aluno);
+            updateAluno.setNome(aluno.getNome());
+            updateAluno.setMatricula(aluno.getMatricula());
+            updateAluno.setCpf(aluno.getCpf());
+            updateAluno.setRg(aluno.getRg());
+            updateAluno.setTelefone(aluno.getTelefone());
+            updateAluno.setCurso(aluno.getCurso());
+            updateAluno.setEmail(aluno.getEmail());
+            updateAluno.setEmailProfessor(aluno.getEmailProfessor());
+            updateAluno.setCurriculo(aluno.getCurriculo());
 
-            return new ResponseEntity<>("Aluno atualizado com sucesso", HttpStatus.OK);
+            Alunos savedAluno = alunoRepository.save(updateAluno);
+            return ResponseEntity.ok(savedAluno);
         } else {
-            return new ResponseEntity<>("Aluno não encontrado", HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
+
     }
-
-
-    @DeleteMapping("/delete")
-    @ResponseBody
-    public ResponseEntity<String> delete (@RequestParam Long id) {
-        alunoRepository.deleteById(id);
-        return new ResponseEntity<String>("Aluno deletado com sucesso", HttpStatus.OK);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteAluno (@PathVariable Long id) {
+        Optional<Alunos> existingAluno = alunoRepository.findById(id);
+        if(existingAluno.isPresent()){
+            alunoRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }

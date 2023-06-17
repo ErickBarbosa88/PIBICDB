@@ -53,9 +53,7 @@ public class ProfessorController {
             updatedProfessor.setCpf(professor.getCpf());
             updatedProfessor.setCurso(professor.getCurso());
             updatedProfessor.setTelefone(professor.getTelefone());
-            updatedProfessor.setTituloDoProjetoDePesquisa(professor.getTituloDoProjetoDePesquisa());
-            updatedProfessor.setAreaDeConhecimentoDoCNPqDoProjetoDePesquisa(professor.getAreaDeConhecimentoDoCNPqDoProjetoDePesquisa());
-            updatedProfessor.setNomeDoGrupoDePesquisa(professor.getNomeDoGrupoDePesquisa());
+
 
             Professor savedProfessor = professorRepository.save(updatedProfessor);
             return ResponseEntity.ok(savedProfessor);
