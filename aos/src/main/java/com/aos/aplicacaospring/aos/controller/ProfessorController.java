@@ -1,7 +1,5 @@
 package com.aos.aplicacaospring.aos.controller;
-
 import com.aos.aplicacaospring.aos.Repository.ProfessorRepository;
-import com.aos.aplicacaospring.aos.model.Alunos;
 import com.aos.aplicacaospring.aos.model.Professor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,44 +13,65 @@ import java.util.Optional;
 @CrossOrigin
 @RequestMapping("/professor")
 public class ProfessorController {
-
     @Autowired
     ProfessorRepository professorRepository;
 
-    @GetMapping("/")
-    public List<Professor> listar(){
-
-        return professorRepository.findAll();
-    }
-    @PostMapping("/create")
-    public Professor criar (@RequestBody Professor professor){
-        return professorRepository.save(professor);
-
+    @GetMapping
+    public ResponseEntity<List<Professor>> getAllProfessor(){
+        List<Professor> professores = professorRepository.findAll();
+        if(!professores.isEmpty()){
+            return ResponseEntity.ok(professores);
+        }
+            return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Professor> getProfessorById(@PathVariable Long id){
+        Optional<Professor> professor = professorRepository.findById(id);
+        if(professor.isPresent()){
+            return ResponseEntity.ok(professor.get());
+        }
+        return ResponseEntity.notFound().build();
+    }
+    @PostMapping
+    public ResponseEntity<Professor> createProfessor (@RequestBody Professor professor){
+        Professor newProfessor = professorRepository.save(professor);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newProfessor);
+    }
 
-    @PutMapping("/editar/{id}")
-    public ResponseEntity<String> editar(@PathVariable Long id, @RequestBody Professor professorAtualizado) {
-        Optional<Professor> professorExistente = professorRepository.findById(id);
 
-        if (professorExistente.isPresent()) {
-            Professor professor = professorExistente.get();
-            professor.setNome(professorAtualizado.getNome());
-            professor.setNome(professorAtualizado.getEmail());
+    @PutMapping("/{id}")
+    public ResponseEntity<Professor> updateProfessor(@PathVariable Long id, @RequestBody Professor professor) {
+        Optional<Professor> existingProfessor = professorRepository.findById(id);
 
-            professorRepository.save(professor);
+        if (existingProfessor.isPresent()) {
+            Professor updatedProfessor = existingProfessor.get();
+            updatedProfessor.setEmail(professor.getEmail());
+            updatedProfessor.setNome(professor.getNome());
+            updatedProfessor.setTitulacao(professor.getTitulacao());
+            updatedProfessor.setMatricula(professor.getMatricula());
+            updatedProfessor.setCpf(professor.getCpf());
+            updatedProfessor.setCurso(professor.getCurso());
+            updatedProfessor.setTelefone(professor.getTelefone());
+            updatedProfessor.setTituloDoProjetoDePesquisa(professor.getTituloDoProjetoDePesquisa());
+            updatedProfessor.setAreaDeConhecimentoDoCNPqDoProjetoDePesquisa(professor.getAreaDeConhecimentoDoCNPqDoProjetoDePesquisa());
+            updatedProfessor.setNomeDoGrupoDePesquisa(professor.getNomeDoGrupoDePesquisa());
 
-            return new ResponseEntity<>("Professor atualizado com sucesso", HttpStatus.OK);
+            Professor savedProfessor = professorRepository.save(updatedProfessor);
+            return ResponseEntity.ok(savedProfessor);
         } else {
-            return new ResponseEntity<>("Professor não encontrado", HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 
-
-    @DeleteMapping("/delete")
-    @ResponseBody
-    public ResponseEntity<String> delete (@RequestParam Long id) {
-        professorRepository.deleteById(id);
-        return new ResponseEntity<String>("Aluno deletado com sucesso", HttpStatus.OK);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProject (@PathVariable Long id) {
+        Optional<Professor> existingProfessor = professorRepository.findById(id);
+        if(existingProfessor.isPresent()){
+            professorRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }
+            return ResponseEntity.notFound().build();
     }
+
 }
